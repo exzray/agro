@@ -1,0 +1,45 @@
+create schema if not exists agro;
+
+create table if not exists messages
+(
+	id int auto_increment,
+	name varchar(60) null,
+	email varchar(60) null,
+	subject varchar(60) null,
+	message varchar(300) null,
+	reply varchar(300) null,
+	constraint messages_pk
+		primary key (id)
+);
+
+create table if not exists package
+(
+	id int auto_increment,
+	name varchar(30) null,
+	price double null,
+	maximum int null,
+	constraint package_pk
+		primary key (id)
+);
+
+create table if not exists activity
+(
+	id int auto_increment,
+	label varchar(30) null,
+	description varchar(300) null,
+	image varchar(120) null,
+	constraint activity_pk
+		primary key (id)
+);
+
+alter table package
+	add constraint package_activity_id_fk
+		foreign key (id) references activity (id)
+			on delete cascade;
+
+
+
+gmail
+nabila.developer@gmail.com
+0123456789Aa
+
