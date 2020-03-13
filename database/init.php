@@ -23,7 +23,6 @@ create or replace table activity
     label varchar (30) null,
     description varchar (300) null,
     image varchar (120) null,
-    `show` tinyint (1) default 1 null
 )';
 if (!$conn->query($sql)) echo 'Fail create table activity!';
 

@@ -8,12 +8,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $subject = $_POST['subject'];
     $message = $_POST['id'];
     $reply = $_POST['reply'];
+    $action = $_POST['action'];
 
-    $sql = "update message set reply = '" . $reply . "' where id = " . $id;
+    if ($action === 'delete') {
+        $sql = "delete from message where id = " . $id;
 
-    $conn->query($sql);
+        $conn->query($sql);
+
+        header('Location: ../admin_message.php');
+    }
+
+    if ($action === 'update') {
+        $sql = "update message set reply = '" . $reply . "' where id = " . $id;
+
+        $conn->query($sql);
+
+        header('Location: ../admin_message.php?reply=' . $id);
+    }
 
     $conn->close();
-
-    header('Location: ../admin_message.php?reply=' . $id);
 }

@@ -60,7 +60,9 @@ $conn->close();
                                   class="form-control"><?= $data['reply'] ?></textarea>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-outline-info float-right">Update</button>
+                <hr class="my-4">
+                <button type="submit" class="btn btn-outline-danger float-left" name="action" value="delete">Delete</button>
+                <button type="submit" class="btn btn-outline-info float-right" name="action" value="update">Update</button>
             </form>
         </div>
     </div>
