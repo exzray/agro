@@ -9,32 +9,65 @@ if ($conn->connect_error) {
     die('Could not connect: ' . $conn->connect_error);
 }
 
-$sql = 'create database if not exists agro;';
+$sql = 'create or replace database if not exists agro';
+if (!$conn->query($sql)) echo 'fail create database agro!';
 
-if (!$conn->query($sql)){
-    echo 'fail create database agro';
-}
-
-$sql = 'use agro;';
+$sql = 'use agro';
 $conn->query($sql);
 
-$sql = 'create table if not exists reservation
+$sql = '
+create or replace table activity
 (
-	id int auto_increment,
-	name varchar(120) not null,
-	email varchar(40) not null,
-	contact varchar(12) not null,
-	size int not null,
-	activity varchar(30) not null,
-	booking_date date not null,
-	payment varchar(20) not null,
-	constraint agro_pk
-		primary key (id)
-);';
+    id int auto_increment
+    primary key,
+    label varchar (30) null,
+    description varchar (300) null,
+    image varchar (120) null,
+    `show` tinyint (1) default 1 null
+)';
+if (!$conn->query($sql)) echo 'Fail create table activity!';
 
-if (!$conn->query($sql)){
-    echo 'fail create table reservation';
-}
+$sql = '
+create or replace table message
+(
+    id int auto_increment
+    primary key,
+    name varchar (60) null,
+    email varchar (60) null,
+    subject varchar (60) null,
+    message varchar (300) null,
+    reply varchar (300) null,
+    created date null
+)';
+if (!$conn->query($sql)) echo 'Fail create table message!';
+
+$sql = '
+create or replace table package
+(
+    id int auto_increment
+    primary key,
+    name varchar (30) null,
+    price double null,
+    maximum int null
+)';
+if (!$conn->query($sql)) echo 'Fail create table package!';
+
+$sql = '
+create or replace table service
+(
+    id int auto_increment
+    primary key,
+    id_package int not null,
+    id_activity int not null,
+    constraint service_activity_id_fk
+    foreign key (id_activity) references activity (id)
+    on delete cascade,
+    constraint service_package_id_fk
+    foreign key (id_package) references package (id)
+    on delete cascade
+)';
+if (!$conn->query($sql)) echo 'Fail create table service!';
+
 
 mysqli_close($conn);
 
