@@ -20,9 +20,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="admin_activity.php">Activity</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="admin_gallery.php">Gallery</a>
-                </li>
             </ul>
         </div>
     </div>
