@@ -58,8 +58,8 @@ $conn->close();
     </ul>
     <nav aria-label="Page navigation example">
         <ul class="pagination">
-            <?php for ($n = 1; $n < $total_pages; $n++): ?>
-            <li class="page-item"><a class="page-link" href="admin_message.php?page_index=<?=$n?>"><?=$n?></a></li>
+            <?php for ($n = 0; $n < $total_pages; $n++): ?>
+            <li class="page-item"><a class="page-link" href="admin_message.php?page_index=<?=$n + 1?>"><?=$n + 1?></a></li>
             <?php endfor; ?>
         </ul>
     </nav>

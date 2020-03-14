@@ -17,6 +17,7 @@ require_once '../database/connect.php';
         <?php include_once 'navbar.php' ?>
 
         <br>
+        <br>
 
         <?php
         if ($_SERVER['REQUEST_METHOD'] === 'GET'){
