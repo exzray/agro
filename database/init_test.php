@@ -10,9 +10,9 @@ if ($conn->connect_error) {
 }
 
 $sql = 'create or replace database test';
-if (!$conn->query($sql)) echo 'fail create database agro!';
+if (!$conn->query($sql)) echo $conn->connect_error;
 
-$sql = 'use agro';
+$sql = 'use test';
 $conn->query($sql);
 
 $sql = '
