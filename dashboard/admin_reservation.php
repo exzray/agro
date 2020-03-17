@@ -3,6 +3,28 @@
 
 <?php
 require_once '../database/connect.php';
+
+$packages = array();
+$reservations = array();
+
+$sql = "select * from package";
+$result = $conn->query($sql);
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) array_push($packages, $row);
+}
+
+// default sql for all row in reservation
+$sql = "select * from reservation order by start desc";
+
+if (isset($_GET['packages'])) {
+    $str_ids = join(',', $_GET['packages']);
+    $sql = "select * from reservation where id_package in ($str_ids) order by start desc";
+}
+
+$result = $conn->query($sql);
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) array_push($reservations, $row);
+}
 ?>
 
 <!doctype html>
@@ -22,7 +44,54 @@ require_once '../database/connect.php';
 <br>
 <div class="container">
     <div class="row">
-        <div class="col-md-2"></div>
+        <div class="col-md-3">
+            <div>
+                <form method="get" action="admin_reservation.php">
+                    <div class="form-group">
+                        <label for="id_package">Package Filter</label>
+                        <select multiple class="form-control" id="id_package" name="packages[]">
+                            <?php foreach ($packages as $package): ?>
+                                <option value="<?= $package['id'] ?>"><?= ucwords($package['name']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary btn-block">Filter</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">NAME</th>
+                    <th scope="col">CONTACT</th>
+                    <th scope="col">SIZE</th>
+                    <th scope="col">PACKAGE</th>
+                    <th scope="col">BOOKING DATE</th>
+                    <th scope="col">ACTION</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($reservations as $reservation): ?>
+                    <?php
+                        foreach ($packages as $package){
+                            if ($package['id'] === $reservation['id_package']) $package_name = $package['name'];
+                        }
+                    ?>
+                    <tr>
+                        <td><?= $reservation['id'] ?></td>
+                        <td><?= ucwords($reservation['name']) ?></td>
+                        <td><?= $reservation['contact'] ?></td>
+                        <td><?= $reservation['people'] ?></td>
+                        <td><?= $reservation['start'] ?></td>
+                        <td><?= $package_name ?></td>
+                        <td><a href="admin_reservation.php?id=<?= $reservation['id'] ?>">edit</a></td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -41,5 +110,3 @@ require_once '../database/connect.php';
 <?php
 $conn->close();
 ?>
-
-
