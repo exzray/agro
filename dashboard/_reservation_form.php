@@ -89,6 +89,18 @@ if ($result->num_rows > 0) {
                     </select>
                 </div>
                 <div class="form-group">
+                    <label for="id_status">Status</label>
+                    <select id="id_status" class="form-control" name="status">
+                        <?php foreach (['pending', 'success', 'cancel'] as $status): ?>
+                            <?php if ($reservation['status'] === $status): ?>
+                                <option value="<?= $status ?>" selected="selected"><?= $status ?></option>
+                            <?php else: ?>
+                                <option value="<?= $status ?>"><?= $status ?></option>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="id_start">Booking date</label>
                     <input id="id_start" type="text" class="form-control" value="<?= $reservation['start'] ?>" readonly
                            required>
@@ -100,8 +112,8 @@ if ($result->num_rows > 0) {
                 </div>
 
                 <div class="clearfix">
-                    <button name="action" value="delete" class="btn btn-outline-danger mt-4">DELETE</button>
-                    <button name="action" value="update" class="btn btn-outline-info float-right mt-4">UPDATE</button>
+                    <button name="action" value="delete" class="btn btn-outline-danger my-4">DELETE</button>
+                    <button name="action" value="update" class="btn btn-outline-info float-right my-4">UPDATE</button>
                 </div>
             </form>
         </div>

@@ -63,12 +63,11 @@ if ($result->num_rows > 0) {
             <table class="table">
                 <thead class="thead-dark">
                 <tr>
-                    <th scope="col">ID</th>
                     <th scope="col">NAME</th>
-                    <th scope="col">CONTACT</th>
-                    <th scope="col">SIZE</th>
+                    <th scope="col">PEOPLE</th>
                     <th scope="col">PACKAGE</th>
-                    <th scope="col">BOOKING DATE</th>
+                    <th scope="col">BOOKING</th>
+                    <th scope="col">STATUS</th>
                     <th scope="col">ACTION</th>
                 </tr>
                 </thead>
@@ -80,12 +79,17 @@ if ($result->num_rows > 0) {
                         }
                     ?>
                     <tr>
-                        <td><?= $reservation['id'] ?></td>
+                        <?php
+                            $status_highlight = '';
+                            if ($reservation['status'] === 'pending') $status_highlight = 'text-info';
+                            elseif ($reservation['status'] === 'success')$status_highlight = 'text-success';
+                            elseif ($reservation['status'] === 'cancel')$status_highlight = 'text-danger';
+                        ?>
                         <td><?= ucwords($reservation['name']) ?></td>
-                        <td><?= $reservation['contact'] ?></td>
                         <td><?= $reservation['people'] ?></td>
                         <td><?= $package_name ?></td>
                         <td><?= $reservation['start'] ?></td>
+                        <td class="<?= $status_highlight ?>"><?= $reservation['status'] ?></td>
                         <td><a href="_reservation_form.php?id=<?= $reservation['id'] ?>">edit</a></td>
                     </tr>
                 <?php endforeach; ?>
