@@ -1,4 +1,5 @@
 <?php
+require_once '../database/connect.php';
 
 $packages = array();
 $activities = array();
@@ -41,6 +42,7 @@ if ($result->num_rows > 0) {
     }
 }
 
+$conn->close();
 ?>
 
 <!doctype html>
