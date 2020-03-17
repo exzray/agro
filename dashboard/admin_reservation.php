@@ -84,9 +84,9 @@ if ($result->num_rows > 0) {
                         <td><?= ucwords($reservation['name']) ?></td>
                         <td><?= $reservation['contact'] ?></td>
                         <td><?= $reservation['people'] ?></td>
-                        <td><?= $reservation['start'] ?></td>
                         <td><?= $package_name ?></td>
-                        <td><a href="admin_reservation.php?id=<?= $reservation['id'] ?>">edit</a></td>
+                        <td><?= $reservation['start'] ?></td>
+                        <td><a href="_reservation_form.php?id=<?= $reservation['id'] ?>">edit</a></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
