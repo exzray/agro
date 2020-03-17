@@ -14,17 +14,31 @@ if ($result->num_rows > 0) {
 }
 
 // default sql for all row in reservation
-$sql = "select * from reservation order by start desc";
+$sql = "select * from reservation order by start desc;";
+
+$filter_array = array();
 
 if (isset($_GET['packages'])) {
-    $str_ids = join(',', $_GET['packages']);
-    $sql = "select * from reservation where id_package in ($str_ids) order by start desc";
+    $str_package = join(',', $_GET['packages']);
+    $id_filter = "id_package in ($str_package)";
+    array_push($filter_array, $id_filter);
 }
+
+if (isset($_GET['status'])){
+    $str = $_GET['status'];
+    $status_filter = "status = '$str'";
+    array_push($filter_array, $status_filter);
+}
+
+$filter = join(' and ', $filter_array);
+if (!empty($filter)) $sql = "select * from reservation where $filter order by start desc";
 
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) array_push($reservations, $row);
 }
+
+if ($conn->error) echo $conn->error;
 ?>
 
 <!doctype html>
@@ -47,6 +61,22 @@ if ($result->num_rows > 0) {
         <div class="col-md-3">
             <div>
                 <form method="get" action="admin_reservation.php">
+                    <div class="form-group">
+                        <label for="id_status">Status Filter</label>
+                        <select class="form-control" id="id_status" name="status">
+                            <?php foreach (['pending', 'success', 'cancel'] as $status): ?>
+                                <?php
+                                    if (isset($_GET['status'])) $get_status = $_GET['status'];
+                                    else $get_status = 'pending';
+                                ?>
+                                <?php if ($get_status === $status): ?>
+                                    <option value="<?= $status ?>" selected="selected"><?= $status ?></option>
+                                <?php else: ?>
+                                    <option value="<?= $status ?>"><?= $status ?></option>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
                     <div class="form-group">
                         <label for="id_package">Package Filter</label>
                         <select multiple class="form-control" id="id_package" name="packages[]">
