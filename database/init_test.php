@@ -9,11 +9,30 @@ if ($conn->connect_error) {
     die('Could not connect: ' . $conn->connect_error);
 }
 
-$sql = 'create or replace database test';
+$sql = 'create or replace database agro';
 if (!$conn->query($sql)) echo $conn->connect_error;
 
-$sql = 'use test';
+$sql = 'use agro';
 $conn->query($sql);
+
+$sql = '
+create or replace table reservation
+(
+    id int auto_increment
+    primary key,
+    name varchar (60) null,
+    email varchar (60) null,
+    contact varchar (12) null,
+    people int null,
+    id_package int not null,
+    start date null,
+    created date null,
+    constraint reservation_package_id_fk
+    foreign key (id_package) references package (id)
+    on delete cascade
+);';
+$conn->query($sql);
+if ($conn->connect_error) echo $conn->connect_error;
 
 $sql = '
 create or replace table activity

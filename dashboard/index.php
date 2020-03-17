@@ -1,3 +1,7 @@
+<?php
+require_once 'database/connect.php';
+?>
+
 <!doctype html>
 <html lang="en">
     <head>
@@ -19,3 +23,6 @@
 </html>
 
 <?php
+$conn->close();
+?>
+

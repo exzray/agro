@@ -1,4 +1,17 @@
-<!-- Start Reservation section -->
+<?php
+$packages = array();
+
+require 'database/connect.php';
+
+$sql = "select * from package";
+$result = $conn->query($sql);
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) array_push($packages, $row);
+}
+
+if ($conn->error) echo $conn->error;
+?>
+
 <section id="mu-reservation">
     <div class="container">
         <div class="row">
@@ -15,50 +28,56 @@
 
                         <div class="col-md-6">
                             <div class="mu-reservation-left">
-                                <form class="mu-reservation-form">
+                                <form class="mu-reservation-form" id="id_form_reservation" method="post" action="database/new_reservation.php">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <input type="text" class="form-control" placeholder="Full Name">
+                                                <input id="id_name_reserve" type="text" class="form-control" placeholder="Full Name"
+                                                       name="name">
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <input type="email" class="form-control" placeholder="Email">
+                                                <input id="id_email_reserve" type="email" class="form-control" placeholder="Email"
+                                                       name="email">
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <input type="text" class="form-control" placeholder="Phone Number">
+                                                <input id="id_contact_reserve" type="text" class="form-control" placeholder="Phone Number"
+                                                       name="contact">
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <select class="form-control">
+                                                <select id="id_people_reserve" class="form-control" name="people">
                                                     <option value="0">How Many?</option>
-                                                    <option value="1 Person">1 Person</option>
-                                                    <option value="2 People">2 People</option>
-                                                    <option value="3 People">3 People</option>
-                                                    <option value="4 People">4 People</option>
-                                                    <option value="5 People">5 People</option>
-                                                    <option value="6 People">6 People</option>
-                                                    <option value="7 People">7 People</option>
-                                                    <option value="8 People">8 People</option>
-                                                    <option value="9 People">9 People</option>
-                                                    <option value="10 People">10 People</option>
+                                                    <option value="1">1 Person</option>
+                                                    <option value="2">2 People</option>
+                                                    <option value="3">3 People</option>
+                                                    <option value="4">4 People</option>
+                                                    <option value="5">5 People</option>
+                                                    <option value="6">6 People</option>
+                                                    <option value="7">7 People</option>
+                                                    <option value="8">8 People</option>
+                                                    <option value="9">9 People</option>
+                                                    <option value="10">10 People</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <select id="id_package_reserve" class="form-control" name="package">
+                                                    <?php foreach ($packages as $package): ?>
+                                                        <option value="<?= $package['id'] ?>"><?= $package['name'] ?></option>
+                                                    <?php endforeach; ?>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <input type="text" class="form-control" id="datepicker"
-                                                       placeholder="Date">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <textarea class="form-control" cols="30" rows="10"
-                                                          placeholder="Your Message"></textarea>
+                                                       placeholder="Date" name="start">
                                             </div>
                                         </div>
                                         <button type="submit" class="mu-readmore-btn">Make Reservation</button>
@@ -98,6 +117,3 @@
         </div>
     </div>
 </section>
-<!-- End Reservation section -->
-
-<?php

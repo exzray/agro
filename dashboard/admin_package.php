@@ -1,5 +1,4 @@
 <?php
-require_once '../database/connect.php';
 
 $packages = array();
 $activities = array();
@@ -59,9 +58,11 @@ if ($result->num_rows > 0) {
 <?php include_once 'navbar.php' ?>
 
 <br>
-<br>
 
 <div class="container">
+    <form method="get" action="_package_form.php" class="clearfix">
+        <button class="btn btn-primary float-right my-4">Add Package</button>
+    </form>
     <div class="row">
         <div class="col-md-3 mb-4">
             <ul class="list-group">
@@ -73,42 +74,10 @@ if ($result->num_rows > 0) {
             </ul>
         </div>
         <div class="col-md-9">
-            <h3>View: <?= $default_package['name'] ?></h3>
+            <h3>View: <?= $default_package['name'] ?> <small class="ml-3"><a href="_package_form.php?id=<?=$default_package['id']?>">Edit</a></small></h3>
             <hr>
             <br>
-            <form method="post" action="functions/edit_package.php">
-                <div class="form-row">
-                    <input type="hidden" name="id" value="<?= $default_package['id'] ?>">
-                    <div class="col-md-4">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">Name</span>
-                            </div>
-                            <input type="text" class="form-control" id="id_price" placeholder="Name"
-                                   name="name" value="<?= $default_package['name'] ?>" required>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">Price</span>
-                            </div>
-                            <input type="text" class="form-control" id="id_price" placeholder="Price"
-                                   name="price" value="<?= $default_package['price'] ?>" required>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">Slot</span>
-                            </div>
-                            <input type="text" class="form-control" id="id_slot" placeholder="maximum"
-                                   name="maximum" value="<?= $default_package['maximum'] ?>" required>
-                        </div>
-                    </div>
-                    <button class="btn btn-primary btn-inline mb-3">Update</button>
-                </div>
-            </form>
+            <h5>Price per pax: RM<?=$default_package['price']?>, Limit people: <?=$default_package['maximum']?></h5>
             <br>
             <table class="table">
                 <thead class="thead-dark text-center">

@@ -1,53 +1,75 @@
-$(function() {
+$(function () {
 
-	// Get the form.
-	const form = $('#ajax-contact');
+    const form_reservation = $('#id_form_reservation');
+    $(form_reservation).submit(function (e) {
+        e.preventDefault();
 
-	// Get the messages div.
-	const formMessages = $('#form-messages');
+        $.ajax({
+            type: 'POST',
+            url: $(form_reservation).attr('action'),
+            data: $(form_reservation).serialize(),
+            success: function (response) {
+				$('#id_name_reserve').val('');
+				$('#id_email_reserve').val('');
+				$('#id_contact_reserve').val('');
+				$('#datepicker').val('');
 
-	// Set up an event listener for the contact form.
-	$(form).submit(function(e) {
-		// Stop the browser from submitting the form.
-		e.preventDefault();
+                alert(response['msg']);
+            },
+            error: function (request, status, err) {
 
-		// Serialize the form data.
-		const formData = $(form).serialize();
+            }
+        });
+    });
 
-		// Submit the form using AJAX.
-		$.ajax({
-			type: 'POST',
-			url: $(form).attr('action'),
-			data: formData,
-			success: function (response) {
-				// Make sure that the formMessages div has the 'success' class.
-				$(formMessages).removeClass('error');
-				$(formMessages).addClass('success');
+    // Get the form.
+    const form = $('#ajax-contact');
 
-				// Set the message text.
-				$(formMessages).text(response.message);
+    // Get the messages div.
+    const formMessages = $('#form-messages');
 
-				if (response['mail_error'] !== '') window.alert(response['mail_error']);
+    // Set up an event listener for the contact form.
+    $(form).submit(function (e) {
+        // Stop the browser from submitting the form.
+        e.preventDefault();
 
-				// Clear the form.
-				$('#name').val('');
-				$('#email').val('');
-				$('#subject').val('');
-				$('#message').val('');
-			},
-			error: function (request, status, err) {
-				// Make sure that the formMessages div has the 'error' class.
-				$(formMessages).removeClass('success');
-				$(formMessages).addClass('error');
+        // Serialize the form data.
+        const formData = $(form).serialize();
 
-				// Set the message text.
-				if (request.message !== '') {
-					$(formMessages).text(request.message);
-				} else {
-					$(formMessages).text('Oops! An error occured and your message could not be sent.');
-				}
-			}
-		})
-	});
+        // Submit the form using AJAX.
+        $.ajax({
+            type: 'POST',
+            url: $(form).attr('action'),
+            data: formData,
+            success: function (response) {
+                // Make sure that the formMessages div has the 'success' class.
+                $(formMessages).removeClass('error');
+                $(formMessages).addClass('success');
+
+                // Set the message text.
+                $(formMessages).text(response.message);
+
+                if (response['mail_error'] !== '') window.alert(response['mail_error']);
+
+                // Clear the form.
+                $('#name').val('');
+                $('#email').val('');
+                $('#subject').val('');
+                $('#message').val('');
+            },
+            error: function (request, status, err) {
+                // Make sure that the formMessages div has the 'error' class.
+                $(formMessages).removeClass('success');
+                $(formMessages).addClass('error');
+
+                // Set the message text.
+                if (request.message !== '') {
+                    $(formMessages).text(request.message);
+                } else {
+                    $(formMessages).text('Oops! An error occured and your message could not be sent.');
+                }
+            }
+        })
+    });
 
 });
