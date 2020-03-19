@@ -11,13 +11,14 @@ require_once 'connect.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 
-    $statement = $conn->prepare('insert into messages (name, email, subject, message) values (?, ?, ?, ?);');
-    $statement->bind_param('ssss', $name, $email, $subject, $message);
+    $statement = $conn->prepare('insert into message (name, email, subject, message, created) values (?, ?, ?, ?, ?);');
+    $statement->bind_param('sssss', $name, $email, $subject, $message, $created);
 
     $name = $_POST['name'];
     $email = $_POST['email'];
     $subject = $_POST['subject'];
     $message = $_POST['message'];
+    $created = date("Y-m-d");
 
     $statement->execute();
     $statement->close();
