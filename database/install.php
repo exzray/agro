@@ -67,7 +67,7 @@ create or replace table package
     name varchar (30) null,
     price double null,
     maximum int null
-)";
+);";
 $conn->query($sql);
 if ($conn->connect_error) echo $conn->connect_error;
 
@@ -90,6 +90,25 @@ create or replace table reservation
 )";
 $conn->query($sql);
 if ($conn->connect_error) echo $conn->connect_error;
+
+$sql = "
+create or replace table service
+(
+    id int auto_increment
+    primary key,
+    id_package int null,
+    id_activity int null,
+    constraint service_activity_id_fk
+    foreign key (id_activity) references activity (id)
+    on delete cascade,
+    constraint service_package_id_fk
+    foreign key (id_package) references package (id)
+    on delete cascade
+);";
+$conn->query($sql);
+if ($conn->connect_error) echo $conn->connect_error;
+
+echo "Executing script is finish";
 
 mysqli_close($conn);
 

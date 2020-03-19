@@ -33,14 +33,17 @@ if ($result->num_rows > 0) {
     }
 }
 
-$sql = "select * from service where id_package = " . $default_package['id'];
-$result = $conn->query($sql);
+if (isset($default_package)) {
+    $sql = "select * from service where id_package = " . $default_package['id'];
+    $result = $conn->query($sql);
 
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        array_push($services, $row['id_activity']);
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            array_push($services, $row['id_activity']);
+        }
     }
 }
+
 
 $conn->close();
 ?>
@@ -76,41 +79,48 @@ $conn->close();
             </ul>
         </div>
         <div class="col-md-9">
-            <h3>View: <?= $default_package['name'] ?> <small class="ml-3"><a href="_package_form.php?id=<?=$default_package['id']?>">Edit</a></small></h3>
-            <hr>
-            <br>
-            <h5>Price per pax: RM<?=$default_package['price']?>, Limit people: <?=$default_package['maximum']?></h5>
-            <br>
-            <table class="table">
-                <thead class="thead-dark text-center">
-                <tr>
-                    <th scope="row">LABEL</th>
-                    <th scope="row">DESCRIPTION</th>
-                    <th scope="row">ACTION</th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php foreach ($activities as $activity): ?>
+            <?php if (isset($default_package)): ?>
+                <h3>View: <?= $default_package['name'] ?> <small class="ml-3"><a
+                                href="_package_form.php?id=<?= $default_package['id'] ?>">Edit</a></small></h3>
+                <hr>
+                <br>
+                <h5>Price per pax: RM<?= $default_package['price'] ?>, Limit
+                    people: <?= $default_package['maximum'] ?></h5>
+                <br>
+                <table class="table">
+                    <thead class="thead-dark text-center">
                     <tr>
-                        <td><?= $activity['label'] ?></td>
-                        <td><?= $activity['description'] ?></td>
-                        <td>
-                            <form method="post" action="functions/edit_service.php">
-                                <input type="hidden" name="id_package" value="<?= $default_package['id'] ?>">
-                                <input type="hidden" name="id_activity" value="<?= $activity['id'] ?>">
-                                <?php if (!in_array($activity['id'], $services)): ?>
-                                    <button name="action" value="add" class="btn btn-info btn-sm btn-block">Add</button>
-                                <?php else: ?>
-                                    <button name="action" value="remove" class="btn btn-danger btn-sm btn-block">
-                                        Remove
-                                    </button>
-                                <?php endif; ?>
-                            </form>
-                        </td>
+                        <th scope="row">LABEL</th>
+                        <th scope="row">DESCRIPTION</th>
+                        <th scope="row">ACTION</th>
                     </tr>
-                <?php endforeach; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($activities as $activity): ?>
+                        <tr>
+                            <td><?= $activity['label'] ?></td>
+                            <td><?= $activity['description'] ?></td>
+                            <td>
+                                <form method="post" action="functions/edit_service.php">
+                                    <input type="hidden" name="id_package" value="<?= $default_package['id'] ?>">
+                                    <input type="hidden" name="id_activity" value="<?= $activity['id'] ?>">
+                                    <?php if (!in_array($activity['id'], $services)): ?>
+                                        <button name="action" value="add" class="btn btn-info btn-sm btn-block">Add
+                                        </button>
+                                    <?php else: ?>
+                                        <button name="action" value="remove" class="btn btn-danger btn-sm btn-block">
+                                            Remove
+                                        </button>
+                                    <?php endif; ?>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php else: ?>
+                <p class="text-muted">No package yet</p>
+            <?php endif; ?>
         </div>
     </div>
 </div>
