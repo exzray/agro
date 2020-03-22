@@ -55,7 +55,7 @@ $conn->close();
                         <ul class="nav nav-tabs mu-restaurant-menu">
                             <?php foreach ($packages as $package): ?>
                                 <li><a href="#<?= $package['id'] ?>"
-                                                data-toggle="tab"><?= $package['name'] ?></a>
+                                       data-toggle="tab"><?= $package['name'] ?></a>
                                 </li>
                             <?php endforeach ?>
                         </ul>
@@ -64,11 +64,12 @@ $conn->close();
                         <div class="tab-content">
 
                             <?php foreach ($packages as $package): ?>
-                                <div class="tab-pane fade in <?= $skip ? '' : 'active'?>" id="<?= $package['id'] ?>">
-                                    <?php $skip=true ?>
+                                <div class="tab-pane fade in <?= $skip ? '' : 'active' ?>" id="<?= $package['id'] ?>">
+                                    <?php $skip = true ?>
                                     <div class="mu-tab-content-area">
                                         <div>
-                                            <h3>RM <?=$package['price']?> per pax, max <?=$package['maximum']?> person</h3>
+                                            <h3>RM <?= $package['price'] ?> per pax, max <?= $package['maximum'] ?>
+                                                person</h3>
                                             <br>
                                         </div>
                                         <div class="row">
@@ -82,14 +83,16 @@ $conn->close();
                                                                     <div class="media-left">
                                                                         <a href="#">
                                                                             <img class="media-object"
-                                                                                 src="assets/img/menu/item-1.jpg"
+                                                                                 src="<?= $activity['image'] ?>"
                                                                                  alt="img">
                                                                         </a>
                                                                     </div>
                                                                     <div class="media-body">
-                                                                        <h4 class="media-heading"><a href="#"><?=$activity['label'] ?></a></h4>
+                                                                        <h4 class="media-heading"><a
+                                                                                    href="#"><?= $activity['label'] ?></a>
+                                                                        </h4>
                                                                         <span class="mu-menu-price">@</span>
-                                                                        <p><?=$activity['description'] ?></p>
+                                                                        <p><?= $activity['description'] ?></p>
                                                                     </div>
                                                                 </div>
                                                             </li>
@@ -108,13 +111,16 @@ $conn->close();
                                                                     <div class="media-left">
                                                                         <a href="#">
                                                                             <img class="media-object"
-                                                                                 src="assets/img/menu/item-1.jpg" alt="img">
+                                                                                 src="<?= $activity['image'] ?>"
+                                                                                 alt="img">
                                                                         </a>
                                                                     </div>
                                                                     <div class="media-body">
-                                                                        <h4 class="media-heading"><a href="#"><?=$activity['label'] ?></a></h4>
+                                                                        <h4 class="media-heading"><a
+                                                                                    href="#"><?= $activity['label'] ?></a>
+                                                                        </h4>
                                                                         <span class="mu-menu-price">@</span>
-                                                                        <p><?=$activity['description'] ?></p>
+                                                                        <p><?= $activity['description'] ?></p>
                                                                     </div>
                                                                 </div>
                                                             </li>

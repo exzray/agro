@@ -51,6 +51,8 @@ $(function () {
 
                 if (response['mail_error'] !== '') window.alert(response['mail_error']);
 
+                console.log(response['mail_error']);
+
                 // Clear the form.
                 $('#name').val('');
                 $('#email').val('');

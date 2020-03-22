@@ -20,7 +20,7 @@ $conn->close();
     <hr class="my-4">
     <div class="row">
         <div class="col-md-5">
-            <form method="post" action="functions/edit_activity.php" class="clearfix">
+            <form method="post" action="functions/edit_activity.php" class="clearfix" enctype="multipart/form-data">
                 <?php if (isset($_GET['id'])): ?>
                     <div class="form-group row">
                         <label for="id_id" class="col-sm-2">ID</label>
@@ -39,8 +39,15 @@ $conn->close();
                 <div class="form-group row">
                     <label for="id_image" class="col-sm-2">Image</label>
                     <div class="col-sm-10">
-                        <input id="id_image" name="image" class="form-control"
-                               value="<?= isset($data['image']) ? $data['image'] : '' ?>">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <input id="id_image" class="form-control" readonly name="image_name"
+                                       value="<?= isset($data['image']) ? $data['image'] : '' ?>">
+                            </div>
+                            <div class="col-md-4">
+                                <input type="file" name="file" id="id_image">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group row">

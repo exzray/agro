@@ -12,6 +12,9 @@
                     <a class="nav-link" href="index.php">Home</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="admin_banner.php">Banner</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="admin_reservation.php">Reservation</a>
                 </li>
                 <li class="nav-item">

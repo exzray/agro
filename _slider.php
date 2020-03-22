@@ -1,57 +1,35 @@
-<!-- Start slider  -->
-<section id="mu-slider">
-    <div class="mu-slider-area">
-
-        <!-- Top slider -->
-        <div class="mu-top-slider">
-
-            <!-- Top slider single slide -->
-            <div class="mu-top-slider-single">
-                <img src="assets/img/slider/1.jpeg" alt="img">
-                <!-- Top slider content -->
-                <div class="mu-top-slider-content">
-                    <span class="mu-slider-small-title">Selamat datang</span>
-                    <h2 class="mu-slider-title">ke NabilaAgroFarm</h2>
-                    <p>Datang seorang, pulang berkumpulan</p>
-                    <a href="#mu-reservation" class="mu-readmore-btn mu-reservation-btn">Membuat Tempahan</a>
-                </div>
-                <!-- / Top slider content -->
-            </div>
-            <!-- / Top slider single slide -->
-
-            <!-- Top slider single slide -->
-            <div class="mu-top-slider-single">
-                <img src="assets/img/slider/2.jpeg" alt="img">
-                <!-- Top slider content -->
-                <div class="mu-top-slider-content">
-                    <span class="mu-slider-small-title">The Elegant</span>
-                    <h2 class="mu-slider-title">Italian Restaurant</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque voluptatem accusamus non quidem,
-                        deleniti optio.</p>
-                    <a href="#mu-reservation" class="mu-readmore-btn mu-reservation-btn">BOOK A TABLE</a>
-                </div>
-                <!-- / Top slider content -->
-            </div>
-            <!-- / Top slider single slide -->
-
-            <!-- Top slider single slide -->
-            <div class="mu-top-slider-single">
-                <img src="assets/img/slider/3.jpeg" alt="img">
-                <!-- Top slider content -->
-                <div class="mu-top-slider-content">
-                    <span class="mu-slider-small-title">Delicious</span>
-                    <h2 class="mu-slider-title">Spicy Masalas</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque voluptatem accusamus non quidem,
-                        deleniti optio.</p>
-                    <a href="#mu-reservation" class="mu-readmore-btn mu-reservation-btn">BOOK A TABLE</a>
-                </div>
-                <!-- / Top slider content -->
-            </div>
-            <!-- / Top slider single slide -->
-
-        </div>
-    </div>
-</section>
-<!-- End slider  -->
-
 <?php
+require_once "database/connect.php";
+
+$banners = array();
+
+$sql = "select * from banner";
+
+$result = $conn->query($sql);
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) array_push($banners, $row);
+}
+
+if ($conn->error) echo $conn->error;
+
+$conn->close();
+?>
+<?php if (!empty($banners)): ?>
+    <section id="mu-slider">
+        <div class="mu-slider-area">
+            <?php foreach ($banners as $banner): ?>
+                <div class="mu-top-slider">
+                    <div class="mu-top-slider-single">
+                        <img src="<?= $banner['image'] ?>" alt="img" style="height: 850px">
+                        <div class="mu-top-slider-content">
+                            <span class="mu-slider-small-title"><?= $banner['title'] ?></span>
+                            <h2 class="mu-slider-title"><?= $banner['subtitle'] ?></h2>
+                            <p><?= $banner['desc'] ?></p>
+                            <a href="#mu-reservation" class="mu-readmore-btn mu-reservation-btn">Membuat Tempahan</a>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </section>
+<?php endif; ?>

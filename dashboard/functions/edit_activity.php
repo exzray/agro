@@ -2,12 +2,19 @@
 require_once '../../database/connect.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    $file = $_FILES["file"];
+    $file_name = $file["name"];
+    $file_tmp_name = $file["tmp_name"];
+    $file_destination = "../../upload/$file_name";
+    move_uploaded_file($file_tmp_name, $file_destination);
+
     $label = $_POST['label'];
     $description = $_POST['description'];
-    $image = $_POST['image'];
+    $image = empty($file_name) ? $_POST['image_name']:"upload/$file_name";
     $action = $_POST['action'];
 
-    if (!$_POST['id']) {
+    if (!isset($_POST['id'])) {
         // do insert
         $sql = "insert into activity (label, description, image) values ('$label', '$description', '$image')";
 
