@@ -28,46 +28,43 @@ if ($conn->error) echo $conn->error;
 
                         <div class="col-md-6">
                             <div class="mu-reservation-left">
-                                <form class="mu-reservation-form" id="id_form_reservation" method="post" action="database/new_reservation.php">
+                                <form class="mu-reservation-form" id="id_form_reservation" method="post"
+                                      action="database/new_reservation.php">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <input id="id_name_reserve" type="text" class="form-control" placeholder="Full Name"
+                                                <input id="id_name_reserve" type="text" class="form-control"
+                                                       placeholder="Full Name"
+                                                       required
                                                        name="name">
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <input id="id_email_reserve" type="email" class="form-control" placeholder="Email"
+                                                <input id="id_email_reserve" type="email" class="form-control"
+                                                       placeholder="Email"
+                                                       required
                                                        name="email">
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <input id="id_contact_reserve" type="text" class="form-control" placeholder="Phone Number"
+                                                <input id="id_contact_reserve" type="text" class="form-control"
+                                                       placeholder="Phone Number"
+                                                       required
                                                        name="contact">
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <select id="id_people_reserve" class="form-control" name="people">
-                                                    <option value="0">How Many?</option>
-                                                    <option value="1">1 Person</option>
-                                                    <option value="2">2 People</option>
-                                                    <option value="3">3 People</option>
-                                                    <option value="4">4 People</option>
-                                                    <option value="5">5 People</option>
-                                                    <option value="6">6 People</option>
-                                                    <option value="7">7 People</option>
-                                                    <option value="8">8 People</option>
-                                                    <option value="9">9 People</option>
-                                                    <option value="10">10 People</option>
-                                                </select>
+                                                <input required class="form-control" type="number" name="people"
+                                                       placeholder="Number of people">
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <select id="id_package_reserve" class="form-control" name="package">
+                                                <select id="id_package_reserve" class="form-control" name="package"
+                                                        required>
                                                     <?php foreach ($packages as $package): ?>
                                                         <option value="<?= $package['id'] ?>"><?= $package['name'] ?></option>
                                                     <?php endforeach; ?>
@@ -76,7 +73,7 @@ if ($conn->error) echo $conn->error;
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <input type="text" class="form-control" id="datepicker"
+                                                <input type="text" class="form-control" id="datepicker" required
                                                        placeholder="Date" name="start">
                                             </div>
                                         </div>
