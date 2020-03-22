@@ -1,3 +1,17 @@
+<?php
+require_once "../database/connect.php";
+
+$banners = array();
+
+$sql = "select * from banner";
+$result = $conn->query($sql);
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) array_push($banners, $row);
+}
+
+$conn->close();
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -14,7 +28,41 @@
 <?php include_once 'navbar.php' ?>
 <br>
 <div class="container">
-
+    <div class="clearfix">
+        <a href="_banner_form.php" class="float-right btn btn-primary btn-sm">Add Banner</a>
+    </div>
+    <hr>
+    <br>
+    <?php if (!empty($banners)): ?>
+        <table class="table">
+            <thead class="thead-light">
+            <tr>
+                <th scope="row">ID</th>
+                <th scope="row">Title</th>
+                <th scope="row">Subtitle</th>
+                <th scope="row">Description</th>
+                <th scope="row">Image</th>
+                <th scope="row">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($banners as $banner): ?>
+                <tr>
+                    <td><?= $banner['id'] ?></td>
+                    <td><?= $banner['title'] ?></td>
+                    <td><?= $banner['subtitle'] ?></td>
+                    <td><?= $banner['description'] ?></td>
+                    <td style="width: 150px;">
+                        <img src="../<?= $banner['image'] ?>" alt="" class="img-thumbnail"/>
+                    </td>
+                    <td><a href="_banner_form.php?id=<?= $banner['id'] ?>">Edit</a></td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php else: ?>
+        <div class="alert alert-danger" role="alert">Currently no banner is added</div>
+    <?php endif; ?>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
