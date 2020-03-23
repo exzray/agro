@@ -1,37 +1,10 @@
 <?php
 require_once 'connect.php';
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
-require '../phpmailer/PHPMailer.php';
-require '../phpmailer/Exception.php';
-require '../phpmailer/SMTP.php';
+require_once "mailer.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email_error = '';
-
-    $mail = new PHPMailer();
-    $mail->isSMTP();
-    $mail->SMTPAuth = true;
-    $mail->SMTPSecure = 'ssl';
-    $mail->Host = 'smtp.gmail.com';
-    $mail->Port = '465';
-    $mail->isHTML();
-    $mail->Username = 'nabila.developer@gmail.com';
-    $mail->Password = '0123456789Aa';
-    try {
-        $mail->setFrom('no-reply@google.com');
-    } catch (Exception $e) {
-        $email_error .= '\n' . $e->errorMessage();
-    }
-    $mail->Subject = 'Enquire';
-    $mail->Body = '<p>You receive your enquire copy url <a target="_blank" href="localhost/agro/check_message.php?id=' . mysqli_insert_id($conn) . '">click here</a> to see your reply.</p>';
-    try {
-        $mail->addAddress('pythorevolution@gmail.com');
-    } catch (Exception $e) {
-        $email_error .= '\n' . $e->errorMessage();
-    }
+    $error = "";
+    $booking_id = null;
 
     $statement = $conn->prepare("insert into reservation (name, email, contact, people, id_package, start, created) values (?,?,?,?,?,?,?)");
     $statement->bind_param("sssiiss", $name, $email, $contact, $size, $id_package, $booking_date, $created_date);
@@ -51,11 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $maximum_people = $package['maximum'];
     }
 
-    $msg = '';
-
     // booking condition filter
     $size_limit = false;
     $date_limit = false;
+    $total_people = 0;
 
     $sql = "select sum(people) as total_people from reservation where id_package=$id_package and start='$booking_date';";
     $result = $conn->query($sql);
@@ -64,23 +36,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (($total_people + $size) > $maximum_people) {
-        $msg .= "$booking_date your group size is exceeding limit! Please change number of people or book another day. Thank you.";
+        $error .= "\n" . "$booking_date your group size is exceeding limit! Please change number of people or book another day. Thank you.";
         $size_limit = true;
     }
 
     if ($created_date > $booking_date) {
-        $msg .= "You cannot choose today as booking date.";
+        $error .= "\n" . "You cannot choose today as booking date.";
         $date_limit = true;
     }
 
     if (!$date_limit and !$size_limit) {
         $statement->execute();
-        $msg .= 'Your booking is receive, our staff will contact you later.';
+
+        $booking_id = $statement->insert_id;
+        try {
+            $mail->addAddress('pythorevolution@gmail.com');
+        } catch (Exception $e) {
+            $error .= "\n" . $e->getMessage();
+        }
+        $mail->Body = '<p>You receive your enquire copy url <a target="_blank" href="localhost/agro/check_reservation.php?id=' . $booking_id . '">click here</a> to see your reply.</p>';
+        try {
+            $mail->send();
+        } catch (Exception $e) {
+            $error .= $e->getMessage();
+        }
     }
 
-    if ($conn->error) $msg = $conn->error;
+    if ($conn->error) $error .= "\n" . $conn->error;
 
-    $data = ['status' => 'success', 'msg' => $msg];
+    $data = ["id" => $booking_id, "error" => $error];
 
     header("Content-Type: application/json");
     echo json_encode($data);

@@ -1,15 +1,9 @@
 <?php
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
-require '../phpmailer/PHPMailer.php';
-require '../phpmailer/Exception.php';
-require '../phpmailer/SMTP.php';
-
 require_once 'connect.php';
+require_once "mailer.php";
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $error = "";
 
     $statement = $conn->prepare('insert into message (name, email, subject, message, created) values (?, ?, ?, ?, ?);');
     $statement->bind_param('sssss', $name, $email, $subject, $message, $created);
@@ -20,48 +14,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     $message = $_POST['message'];
     $created = date("Y-m-d");
 
-    $statement->execute();
-    $statement->close();
+    if ($statement->execute()) {
 
-    // send json response to ajax
-    header("Content-Type: application/json");
-
-    if ($conn->error) $data = ['message' => $conn->error];
-    else {
-        $email_error = '';
-
-        $mail = new PHPMailer();
-        $mail->isSMTP();
-        $mail->SMTPAuth = true;
-        $mail->SMTPSecure = 'ssl';
-        $mail->Host = 'smtp.gmail.com';
-        $mail->Port = '465';
-        $mail->isHTML();
-        $mail->Username = 'nabila.developer@gmail.com';
-        $mail->Password = '0123456789Aa';
         try {
-            $mail->setFrom('no-reply@google.com');
+            $mail->addAddress($email);
         } catch (Exception $e) {
-            $email_error .= '\n' . $e->errorMessage();
+            $error .= "\n" . $e->getMessage();
         }
-        $mail->Subject = 'Enquire';
-        $mail->Body = '<p>You receive your enquire copy url <a target="_blank" href="localhost/agro/check_message.php?id=' . mysqli_insert_id($conn) . '">click here</a> to see your reply.</p>';
-        try {
-            $mail->addAddress('pythorevolution@gmail.com');
-        } catch (Exception $e) {
-            $email_error .= '\n' . $e->errorMessage();
-        }
-
+        $mail->Body = '<p>You receive your enquire copy url <a target="_blank" href="localhost/agro/check_message.php?id=' . $statement->insert_id . '">click here</a> to see your reply.</p>';
         try {
             $mail->send();
         } catch (Exception $e) {
-            $email_error .= '\n' . $e->errorMessage();
+            $error .= "\n" . $e->getMessage();
         }
-
-        $data = ['message' => 'Your enquire success deliver, our staff will email your later.', 'mail_error' => $email_error];
     }
 
+    if ($conn->error) $error .= "\n" . $conn->error;
+
+    $data = ['message' => 'Your enquire success deliver, our staff will email your later.', $error];
+
+    header("Content-Type: application/json");
     echo json_encode($data);
+
+    $statement->close();
 }
 
 $conn->close();

@@ -26,6 +26,8 @@ if ($conn->error) echo $conn->error;
                     <div class="mu-reservation-content">
                         <p>Sila membuat tempahan sebelum datang untuk penyediaan tempat rekreasi dan makanan.</p>
 
+                        <div id="reservationMessage" class="alert" role="alert"></div>
+
                         <div class="col-md-6">
                             <div class="mu-reservation-left">
                                 <form class="mu-reservation-form" id="id_form_reservation" method="post"

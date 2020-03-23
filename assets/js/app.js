@@ -9,12 +9,27 @@ $(function () {
             url: $(form_reservation).attr('action'),
             data: $(form_reservation).serialize(),
             success: function (response) {
-				$('#id_name_reserve').val('');
-				$('#id_email_reserve').val('');
-				$('#id_contact_reserve').val('');
-				$('#datepicker').val('');
+                const id = response['id'];
+                const error = response['error'];
 
-                alert(response['msg']);
+                $('#id_name_reserve').val('');
+                $('#id_email_reserve').val('');
+                $('#id_contact_reserve').val('');
+                $('#datepicker').val('');
+
+                console.log(error);
+
+
+                if (!(error.trim().length === 0)) {
+                    $('#reservationMessage').removeClass("alert-success");
+                    $('#reservationMessage').addClass("alert-danger");
+                    $('#reservationMessage').text(error);
+                } else {
+                    $('#reservationMessage').addClass("alert-success");
+                    $('#reservationMessage').removeClass("alert-danger");
+                    $('#reservationMessage').append("<a href='check_reservation.php?id=" + id + "' target='_blank'>Your receipt is ready  click here</a>");
+                }
+
             },
             error: function (request, status, err) {
 
@@ -47,11 +62,9 @@ $(function () {
                 $(formMessages).addClass('success');
 
                 // Set the message text.
-                $(formMessages).text(response.message);
+                $(formMessages).text(response["message"]);
 
-                if (response['mail_error'] !== '') window.alert(response['mail_error']);
-
-                console.log(response['mail_error']);
+                console.log(response);
 
                 // Clear the form.
                 $('#name').val('');
@@ -65,7 +78,7 @@ $(function () {
                 $(formMessages).addClass('error');
 
                 // Set the message text.
-                if (request.message !== '') {
+                if (request["error"] !== '') {
                     $(formMessages).text(request.message);
                 } else {
                     $(formMessages).text('Oops! An error occured and your message could not be sent.');
