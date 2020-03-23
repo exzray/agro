@@ -80,6 +80,10 @@
     </footer>
     <!-- End Footer -->
 
+    <div style="position: fixed; margin: 50px; bottom: 0; left: 0;">
+        <a id="bookingReminder" href="index.php" class="btn btn-warning btn-lg">See My Booking</a>
+    </div>
+
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/js/bootstrap.js"></script>
     <script type="text/javascript" src="assets/js/slick.js"></script>

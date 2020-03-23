@@ -1,5 +1,15 @@
 $(function () {
 
+    const saved_id = localStorage.getItem("booking_id");
+
+    if (saved_id !== null) {
+        $('#bookingReminder').css("display", "block");
+        $('#bookingReminder').attr("href", "check_reservation.php?id=" + saved_id);
+    }
+    else {
+        $('#bookingReminder').css("display", "none");
+    }
+
     const form_reservation = $('#id_form_reservation');
     $(form_reservation).submit(function (e) {
         e.preventDefault();
@@ -17,9 +27,6 @@ $(function () {
                 $('#id_contact_reserve').val('');
                 $('#datepicker').val('');
 
-                console.log(error);
-
-
                 if (!(error.trim().length === 0)) {
                     $('#reservationMessage').removeClass("alert-success");
                     $('#reservationMessage').addClass("alert-danger");
@@ -28,6 +35,10 @@ $(function () {
                     $('#reservationMessage').addClass("alert-success");
                     $('#reservationMessage').removeClass("alert-danger");
                     $('#reservationMessage').append("<a href='check_reservation.php?id=" + id + "' target='_blank'>Your receipt is ready  click here</a>");
+
+                    localStorage.setItem("booking_id", id);
+                    $('#bookingReminder').css("display", "block");
+                    $('#bookingReminder').attr("href", "check_reservation.php?id=" + id);
                 }
 
             },
