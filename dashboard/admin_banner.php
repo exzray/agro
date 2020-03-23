@@ -29,7 +29,7 @@ $conn->close();
 <br>
 <div class="container">
     <div class="clearfix">
-        <a href="_banner_form.php" class="float-right btn btn-primary btn-sm">Add Banner</a>
+        <a href="_banner_form.php" class="float-right btn btn-primary btn-sm">Create New Banner</a>
     </div>
     <hr>
     <br>
@@ -61,7 +61,7 @@ $conn->close();
             </tbody>
         </table>
     <?php else: ?>
-        <div class="alert alert-danger" role="alert">Currently no banner is added</div>
+        <div class="alert alert-danger" role="alert">Currently list is empty!</div>
     <?php endif; ?>
 </div>
 

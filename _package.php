@@ -1,17 +1,15 @@
 <?php
-require_once 'database/connect.php';
-
 $skip = false;
 
-$select_package = 'select * from package;';
-$select_activity = 'select * from activity;';
+$sql_packages = "select * from package";
+$sql_activities = "select * from activity";
 
 $activities = array();
 $packages = array();
 $services = array();
 
 // get all activity row
-$result = $conn->query($select_activity);
+$result = $conn->query($sql_activities);
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $activities[$row['id']] = $row;
@@ -19,7 +17,7 @@ if ($result->num_rows > 0) {
 }
 
 // get all package row
-$result = $conn->query($select_package);
+$result = $conn->query($sql_packages);
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $packages[$row['id']] = $row;
@@ -36,8 +34,6 @@ foreach ($packages as $package) {
         }
     }
 }
-
-$conn->close();
 ?>
 
 <section id="mu-restaurant-menu">

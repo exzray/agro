@@ -56,17 +56,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 <?php endif; ?>
                 <div class="form-group">
                     <label for="id_name">Name</label>
-                    <input type="text" id="id_name" class="form-control" name="name"
+                    <input type="text" id="id_name" class="form-control" name="name" required
                            value="<?= isset($package['name']) ? $package['name'] : '' ?>">
                 </div>
                 <div class="form-group">
                     <label for="id_price">Price</label>
-                    <input type="text" id="id_price" class="form-control" name="price"
+                    <input type="text" id="id_price" class="form-control" name="price" required
                            value="<?= isset($package['price']) ? $package['price'] : '' ?>">
                 </div>
                 <div class="form-group">
                     <label for="id_maximum">Maximum</label>
-                    <input type="text" id="id_maximum" class="form-control" name="maximum"
+                    <input type="text" id="id_maximum" class="form-control" name="maximum" required
                            value="<?= isset($package['maximum']) ? $package['maximum'] : '' ?>">
                 </div>
                 <br>

@@ -61,68 +61,73 @@ $conn->close();
 </head>
 <body>
 <?php include_once 'navbar.php' ?>
-
 <br>
-
 <div class="container">
-    <form method="get" action="_package_form.php" class="clearfix">
-        <button class="btn btn-primary float-right my-4">Add Package</button>
-    </form>
-    <div class="row">
-        <div class="col-md-3 mb-4">
-            <ul class="list-group">
-                <?php foreach ($packages as $package): ?>
-                    <li class="list-group-item">
-                        <a href="admin_package.php?id=<?= $package['id'] ?>"><?= $package['name'] ?></a>
-                    </li>
-                <?php endforeach; ?>
-            </ul>
-        </div>
-        <div class="col-md-9">
-            <?php if (isset($default_package)): ?>
-                <h3>View: <?= $default_package['name'] ?> <small class="ml-3"><a
-                                href="_package_form.php?id=<?= $default_package['id'] ?>">Edit</a></small></h3>
-                <hr>
-                <br>
-                <h5>Price per pax: RM<?= $default_package['price'] ?>, Limit
-                    people: <?= $default_package['maximum'] ?></h5>
-                <br>
-                <table class="table">
-                    <thead class="thead-dark text-center">
-                    <tr>
-                        <th scope="row">LABEL</th>
-                        <th scope="row">DESCRIPTION</th>
-                        <th scope="row">ACTION</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php foreach ($activities as $activity): ?>
-                        <tr>
-                            <td><?= $activity['label'] ?></td>
-                            <td><?= $activity['description'] ?></td>
-                            <td>
-                                <form method="post" action="functions/edit_service.php">
-                                    <input type="hidden" name="id_package" value="<?= $default_package['id'] ?>">
-                                    <input type="hidden" name="id_activity" value="<?= $activity['id'] ?>">
-                                    <?php if (!in_array($activity['id'], $services)): ?>
-                                        <button name="action" value="add" class="btn btn-info btn-sm btn-block">Add
-                                        </button>
-                                    <?php else: ?>
-                                        <button name="action" value="remove" class="btn btn-danger btn-sm btn-block">
-                                            Remove
-                                        </button>
-                                    <?php endif; ?>
-                                </form>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                    </tbody>
-                </table>
-            <?php else: ?>
-                <p class="text-muted">No package yet</p>
-            <?php endif; ?>
-        </div>
+    <div class="clearfix">
+        <a href="_package_form.php" class="float-right btn btn-primary btn-sm">Create New Package</a>
     </div>
+    <hr>
+    <br>
+    <?php if (!empty($packages)): ?>
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                <ul class="list-group">
+                    <?php foreach ($packages as $package): ?>
+                        <li class="list-group-item">
+                            <a href="admin_package.php?id=<?= $package['id'] ?>"><?= $package['name'] ?></a>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+            <div class="col-md-9">
+                <?php if (isset($default_package)): ?>
+                    <h3>View: <?= $default_package['name'] ?> <small class="ml-3"><a
+                                    href="_package_form.php?id=<?= $default_package['id'] ?>">Edit</a></small></h3>
+                    <hr>
+                    <br>
+                    <h5>Price per pax: RM<?= $default_package['price'] ?>, Limit
+                        people: <?= $default_package['maximum'] ?></h5>
+                    <br>
+                    <table class="table">
+                        <thead class="thead-dark text-center">
+                        <tr>
+                            <th scope="row">LABEL</th>
+                            <th scope="row">DESCRIPTION</th>
+                            <th scope="row">ACTION</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($activities as $activity): ?>
+                            <tr>
+                                <td><?= $activity['label'] ?></td>
+                                <td><?= $activity['description'] ?></td>
+                                <td>
+                                    <form method="post" action="functions/edit_service.php">
+                                        <input type="hidden" name="id_package" value="<?= $default_package['id'] ?>">
+                                        <input type="hidden" name="id_activity" value="<?= $activity['id'] ?>">
+                                        <?php if (!in_array($activity['id'], $services)): ?>
+                                            <button name="action" value="add" class="btn btn-info btn-sm btn-block">Add
+                                            </button>
+                                        <?php else: ?>
+                                            <button name="action" value="remove"
+                                                    class="btn btn-danger btn-sm btn-block">
+                                                Remove
+                                            </button>
+                                        <?php endif; ?>
+                                    </form>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php else: ?>
+                    <p class="text-muted">No package yet</p>
+                <?php endif; ?>
+            </div>
+        </div>
+    <?php else: ?>
+        <div class="alert alert-danger" role="alert">Currently list is empty!</div>
+    <?php endif; ?>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"

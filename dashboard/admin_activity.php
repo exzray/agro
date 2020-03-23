@@ -15,10 +15,7 @@ require_once '../database/connect.php';
     </head>
     <body>
         <?php include_once 'navbar.php' ?>
-
         <br>
-        <br>
-
         <?php
         if ($_SERVER['REQUEST_METHOD'] === 'GET'){
             if (isset($_GET['form'])) include_once '_activity_form.php';

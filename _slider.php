@@ -1,6 +1,4 @@
 <?php
-require_once "database/connect.php";
-
 $banners = array();
 
 $sql = "select * from banner";
@@ -12,7 +10,6 @@ if ($result->num_rows > 0) {
 
 if ($conn->error) echo $conn->error;
 
-$conn->close();
 ?>
 <?php if (!empty($banners)): ?>
     <section id="mu-slider">

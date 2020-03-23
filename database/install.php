@@ -108,6 +108,19 @@ create or replace table service
 $conn->query($sql);
 if ($conn->connect_error) echo $conn->connect_error;
 
+$sql = "
+create or replace table banner
+(
+    id int auto_increment
+    primary key,
+    title varchar (120) null,
+    subtitle varchar (120) null,
+    description varchar (500) null,
+    image varchar (200) null
+);";
+$conn->query($sql);
+if ($conn->connect_error) echo $conn->connect_error;
+
 echo "Executing script is finish";
 
 mysqli_close($conn);

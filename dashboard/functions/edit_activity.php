@@ -1,46 +1,52 @@
 <?php
-require_once '../../database/connect.php';
+require_once "../../database/connect.php";
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $file = $_FILES["file"];
+    $label = $_POST["label"];
+    $description = $_POST["description"];
+    $image = $_POST["image"];
+    $action = $_POST["action"];
+
+    // handle file upload
     $file_name = $file["name"];
     $file_tmp_name = $file["tmp_name"];
-    $file_destination = "../../upload/$file_name";
-    move_uploaded_file($file_tmp_name, $file_destination);
+    $file_destination = "../../upload/activity_image/$file_name";
 
-    $label = $_POST['label'];
-    $description = $_POST['description'];
-    $image = empty($file_name) ? $_POST['image_name']:"upload/$file_name";
-    $action = $_POST['action'];
+    if (!empty($file_name)) {
+        $status = move_uploaded_file($file_tmp_name, $file_destination);
 
-    if (!isset($_POST['id'])) {
-        // do insert
+        if ($status) $image = "upload/activity_image/$file_name";
+    }
+
+    if ($action === "create") {
         $sql = "insert into activity (label, description, image) values ('$label', '$description', '$image')";
+        $status = $conn->query($sql);
 
-        if ($conn->query($sql)) {
-            header('Location: ../admin_activity.php?form=yes&id=' . mysqli_insert_id($conn));
+        $id = $conn->insert_id;
+
+        if ($status) header("Location: ../_activity_form.php?id=$id");
+    }
+
+    if (isset($_POST["id"])) {
+        $id = $_POST["id"];
+
+        if ($action === "update") {
+            $sql = "update activity set label='$label', description='$description', image='$image' where id=$id";
+            $status = $conn->query($sql);
+
+            if ($status) header("Location: ../_activity_form.php?id=$id");
         }
-    } else {
-        $id = $_POST['id'];
 
-        if ($action === 'delete') {
-            $sql = "delete from activity where id = " . $id;
+        if ($action === "delete") {
+            $sql = "delete from activity where id=$id";
+            $status = $conn->query($sql);
 
-            $conn->query($sql);
-
-            header('Location: ../admin_activity.php');
-
-        } else {
-            $sql = "update activity set label = '$label', description = '$description', image = '$image' where id = $id";
-
-            if ($conn->query($sql)) {
-                header('Location: ../admin_activity.php?form=yes&id=' . $id);
-            }
+            if ($status) header('Location: ../admin_activity.php');
         }
     }
 
     if ($conn->error) echo $conn->error;
-}
 
-$conn->close();
+    $conn->close();
+}

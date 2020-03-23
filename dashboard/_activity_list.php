@@ -29,45 +29,57 @@ if ($result->num_rows > 0) {
 $conn->close();
 ?>
 <div class="container">
-    <form method="get" action="admin_activity.php">
-        <button name="form" value="yes" type="submit" class="btn btn-primary">Add New Activity</button>
-    </form>
-</div>
-<hr>
-<br>
-<div class="container">
-    <table class="table">
-        <thead class="thead-dark">
-        <tr>
-            <th scope="col">ID</th>
-            <th scope="col">LABEL</th>
-            <th scope="col">DESCRIPTION</th>
-            <th scope="col">IMAGE</th>
-            <th scope="col">Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($activities as $activity): ?>
+    <div class="clearfix">
+        <a href="admin_activity.php?form=yes" class="float-right btn btn-primary btn-sm">Create New Activity</a>
+    </div>
+    <hr>
+    <br>
+    <?php if (!empty($activities)): ?>
+        <table class="table">
+            <thead class="thead-dark">
             <tr>
-                <th scope="row"><?= $activity['id'] ?></th>
-                <td><?= $activity['label'] ?></td>
-                <td><?= $activity['description'] ?></td>
-                <td><?= $activity['image'] === null ? 'none' : $activity['image'] ?></td>
-                <td>
-                    <a href="admin_activity.php?form=yes&id=<?= $activity['id'] ?>">edit</a>
-                </td>
+                <th scope="col">ID</th>
+                <th scope="col">LABEL</th>
+                <th scope="col">DESCRIPTION</th>
+                <th scope="col">IMAGE</th>
+                <th scope="col">Action</th>
             </tr>
-        <?php endforeach; ?>
-        </tbody>
-    </table>
-    <ul class="mt-5 list-unstyled">
-    </ul>
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            <?php for ($n = 1; $n < $total_pages; $n++): ?>
-                <li class="page-item"><a class="page-link" href="admin_activity.php?page_index=<?= $n ?>"><?= $n ?></a>
-                </li>
-            <?php endfor; ?>
+            </thead>
+            <tbody>
+            <?php foreach ($activities as $activity): ?>
+                <tr>
+                    <th scope="row"><?= $activity['id'] ?></th>
+                    <td><?= $activity['label'] ?></td>
+                    <td><?= $activity['description'] ?></td>
+                    <td style="width: 150px;">
+                        <?php if (empty($activity['image'])): ?>
+                            <div class="border d-flex justify-content-center align-items-center flex-column"
+                                 style="height: 100px">
+                                <span class="text-danger">No image yet!</span>
+                            </div>
+                        <?php else: ?>
+                            <img src="../<?= $activity['image'] ?>" alt="" class="img-thumbnail"/>
+                        <?php endif; ?>
+                    </td>
+                    <td>
+                        <a href="admin_activity.php?form=yes&id=<?= $activity['id'] ?>">edit</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+        <ul class="mt-5 list-unstyled">
         </ul>
-    </nav>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <?php for ($n = 1; $n < $total_pages; $n++): ?>
+                    <li class="page-item"><a class="page-link"
+                                             href="admin_activity.php?page_index=<?= $n ?>"><?= $n ?></a>
+                    </li>
+                <?php endfor; ?>
+            </ul>
+        </nav>
+    <?php else: ?>
+        <div class="alert alert-danger" role="alert">Currently list is empty!</div>
+    <?php endif; ?>
 </div>

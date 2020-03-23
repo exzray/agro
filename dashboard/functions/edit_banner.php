@@ -12,12 +12,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // handle file upload
     $file_name = $file["name"];
     $file_tmp_name = $file["tmp_name"];
-    $file_destination = "../../upload/$file_name";
+    $file_destination = "../../upload/banner_image/$file_name";
 
     if (!empty($file_name)) {
         $status = move_uploaded_file($file_tmp_name, $file_destination);
 
-        if ($status) $image = "upload/$file_name";
+        if ($status) $image = "upload/banner_image/$file_name";
     }
 
     if ($action === "create") {
