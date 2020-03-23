@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $booking_id = $statement->insert_id;
         try {
-            $mail->addAddress('pythorevolution@gmail.com');
+            $mail->addAddress($email);
         } catch (Exception $e) {
             $error .= "\n" . $e->getMessage();
         }
