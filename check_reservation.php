@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" and isset($_GET["id"])) {
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-    <title>Admin</title>
+    <title>Booking</title>
 </head>
 <body>
 
@@ -61,6 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" and isset($_GET["id"])) {
             <div class="bg-white p-3 rounded">
                 <form method="get" action="payment.php">
                     <input type="hidden" name="id" value="<?= $id ?>">
+                    <input type="hidden" name="total" value="<?= $reservation["people"] * $package["price"] ?>">
 
                     <div class="form-group row">
                         <label for="id_name" class="col-sm-3 col-form-label">Name Customer</label>
