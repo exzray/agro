@@ -32,9 +32,12 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" and isset($_GET["id"])) {
     $activities_ids_str = join(",", $activities_ids);
     $sql = "select * from activity where id in ($activities_ids_str)";
     $result = $conn->query($sql);
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) array_push($activities, $row);
+    if (!empty($result)){
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) array_push($activities, $row);
+        }
     }
+
 }
 
 ?>

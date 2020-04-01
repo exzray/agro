@@ -34,6 +34,7 @@ $(function () {
                 } else {
                     $('#reservationMessage').addClass("alert-success");
                     $('#reservationMessage').removeClass("alert-danger");
+                    $('#reservationMessage').text('');
                     $('#reservationMessage').append("<a href='check_reservation.php?id=" + id + "' target='_blank'>Your receipt is ready  click here</a>");
 
                     localStorage.setItem("booking_id", id);
